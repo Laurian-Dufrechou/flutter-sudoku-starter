@@ -77,6 +77,21 @@ class _GameState extends State<Game> {
                     width: boxSize,
                     height: boxSize,
                     decoration: BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+                    child: SizedBox(
+                      height: gridSize,
+                      width: gridSize,
+                      child:
+                      GridView.count(
+                        crossAxisCount: 3,
+                        children: List.generate(9, (x) {
+                          return Container(
+                            width: boxSize,
+                            height: boxSize,
+                            decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 0.3)),
+                          );
+                        }),
+                      ),
+                    ),
                   );
                 }),
               ),
