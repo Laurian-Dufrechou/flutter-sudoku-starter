@@ -38,6 +38,7 @@ class _GameState extends State<Game> {
     var width = MediaQuery.of(context).size.width;
     var maxSize = height > width ? width : height;
     var boxSize = (maxSize / 3).ceil().toDouble();
+    var gridSize = boxSize *3;
 
     return Scaffold(
       appBar: AppBar(
@@ -65,6 +66,22 @@ class _GameState extends State<Game> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SizedBox(
+              height: gridSize,
+              width: gridSize,
+              child:
+              GridView.count(
+                crossAxisCount: 3,
+                children: List.generate(9, (x) {
+                  return Container(
+                    width: boxSize,
+                    height: boxSize,
+                    decoration: BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+                  );
+                }),
+              ),
+            )
+            ,
             const Text(
               'You have pushed the button this many times:',
             ),
