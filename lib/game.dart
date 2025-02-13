@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sudoku_api/sudoku_api.dart';
+import 'package:sudoku_starter/Case.dart';
 
 class Game extends StatefulWidget {
 
-  const Game({Key? key, required this.title, required this.puzzle}) : super(key: key);
 
+  const Game({Key? key, required this.title, required this.puzzle}) : super(key: key);
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -22,6 +23,8 @@ class Game extends StatefulWidget {
 }
 
 class _GameState extends State<Game> {
+  bool isSelected = false;
+  var selectedCase = [-1 , -1];
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,7 @@ class _GameState extends State<Game> {
     var maxSize = height > width ? width : height;
     var boxSize = (maxSize / 3).ceil().toDouble();
     var gridSize = boxSize *3;
+
 
     return Scaffold(
       appBar: AppBar(
@@ -62,22 +66,25 @@ class _GameState extends State<Game> {
                     GridView.count(
                       crossAxisCount: 3,
                       children: List.generate(9, (y) {
-                        return Container(
-                          width: boxSize,
-                          height: boxSize,
-                          decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 0.3)),
-                          child:
-                          Center(
-                            child: widget.puzzle.board()!.matrix()![x][y].getValue().toString() == "0" ?
-                                const Text(
-                                  ""
-                                )
-                                :
-                                Text(
-                                    widget.puzzle.board()!.matrix()![x][y].getValue().toString()
-                                )
-
-                          )
+                        return Material(
+                               child:
+                               InkWell(
+                                 onTap: (){
+                                   setState(() {
+                                     if(selectedCase[0] == -1 || selectedCase[1] == -1){
+                                       isSelected = !isSelected;
+                                     }
+                                     if(!isSelected || selectedCase[0] == x && selectedCase[1]==y ){
+                                      isSelected = !isSelected;
+                                     }
+                                      selectedCase = [x, y];
+                                   });
+                                 },
+                                   child:
+                                   Case(value: widget.puzzle.board()!.matrix()![x][y].getValue().toString(),
+                                       boxSize: boxSize,
+                                       isSelected: isSelected && selectedCase[0] == x && selectedCase[1]==y)
+                             )
                         );
                       }),
                     ),
